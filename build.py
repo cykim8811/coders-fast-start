@@ -29,7 +29,8 @@ def dockerfile(runtime, start, build=None):
         raise ValueError("Use a nonempty, bounded start command")
     node = runtime.startswith("nodejs")
     default = (
-        "npm ci && npm run build --if-present && npm prune --omit=dev"
+        "if [ -f package.json ]; then "
+        "npm ci && npm run build --if-present && npm prune --omit=dev; fi"
         if node
         else "if [ -f uv.lock ]; then pip install --no-cache-dir uv && "
         "uv export --frozen --no-dev --no-editable --output-file=/tmp/requirements.txt && "
